@@ -130,12 +130,18 @@ public class GraphColoringTinyCSP {
             csp.notEqual(nodes[u], nodes[v], 0);
         }
 
-        int[] solutions = new int[instance.n];
+        int[] solution = new int[instance.n];
 
-        csp.dfs(sol -> {
-            solutions.cloneInto(sol);
-        });
+        try {
+            csp.dfs(sol -> {
+                System.arraycopy(sol, 0, solution, 0, instance.n);
+                throw new RuntimeException("SolutionFound");
+            });
+        } catch (RuntimeException e) {
+        if (!e.getMessage().equals("SolutionFound"))
+            throw e;
+        }
         
-         return solutions;
+        return solution;
     }
 }
