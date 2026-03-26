@@ -117,11 +117,25 @@ public class GraphColoringTinyCSP {
      *         or null if the problem is unfeasible
      */
     public static int[] solve(GraphColoringTinyCSP.GraphColoringInstance instance) {
-        // TODO: solve the graph coloring problem using TinyCSP and return a solution
-        // Hint: you can stop the search on first solution throwing and catching an exception
-        //       in the onSolution closure or you can modify the dfs search
-         throw new NotImplementedException("GraphColoringTinyCSP");
+        TinyCSP csp = new TinyCSP();
+        Variable[] nodes = new Variable[instance.n];
+
+        for (int i = 0; i < instance.n; i++) {
+            nodes[i] = csp.makeVariable(instance.maxColor);
+        }
+
+        for (int[] edge : instance.edges) {
+            int u = edge[0];
+            int v = edge[1];
+            csp.notEqual(nodes[u], nodes[v], 0);
+        }
+
+        int[] solutions = new int[instance.n];
+
+        csp.dfs(sol -> {
+            solutions.cloneInto(sol);
+        });
+        
+         return solutions;
     }
-
-
 }
